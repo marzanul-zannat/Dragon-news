@@ -1,12 +1,72 @@
 import React from 'react'
+import { FaEye, FaShareAlt, FaStar,  } from 
+"react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
+const NewsCard = ({ news }) => {
+  const {
+    title, author,
+    thumbnail_url, details, rating, total_view, tags,
+  } = news;
 
-const NewsCard = ({news}) => {
+  const formattedDate = new Date( news.author.published_date).toLocaleDateString();
   return (
-    <div>
-      {news.title}
-      <img src={news.image_url} alt="" />
-    </div>
-  )
-}
+    <div className="card bg-base-100 shadow-mb md-mb-6 ">
+      {/* Author+Shair */}
+      <div className="flex bg-base-200 justify-between items-center p-4">
+        <div className="flex items-center gap-3">
+          <div className="avater">
+            <div className="w-10 rounded-full">
+              <img src={author.img} alt={author.name} />
+            </div>
+          </div>
+          <div className="">
+            <h2 className='font-bold text-sm '>{author.name}</h2>
+            <p className='text-xs text-gray-500'>{formattedDate}</p>
+          </div>
+        </div>
+        <button className='text-gray-500 hover:text-primary flex gap-1'>
+          <FaBookmark />
+          <FaShareAlt></FaShareAlt>
+        </button>
+      </div>
+      {/* Title */}
+      <div className="px-4">
+        <h2 className='text-lg font-bold text-primary hover:underline cursor-pointer'>{title}</h2>
+      </div>
+      {/* image */}
+      <div className='px-4 py-2'>
+        <img src={thumbnail_url} alt={title} className='w-full h-48 object-cover rounded-md' />
+      </div>
+      {/* Details */}
+      <div className="px-4 text-sm text-gray-700">
+        {details.length > 200 ? (
+          <>
+            {details.slice(0, 200)}...
+            <span className='text-primary font-semibold cursor-pointer hover:underline'>
+              Read More
+            </span>
+          </>) : (
+          details
+        )}
+      </div>
 
-export default NewsCard
+      {/* Footer */}
+      <div className="flex justify-between items-center px-4 py-3 border-t mt-3 ">
+        {/* Rating */}
+        <div className="flex items-center gap-3 text-orange-400">
+          {Array.from({ length: rating.number }).map((_, i) => (
+            <FaStar key={i} />
+          ))}
+          <span className=' ml-2 text-gray-600'>{rating.number}</span>
+        </div>
+        {/* views */}
+        <div className="flex items-center gap-2 text-gray-500">
+          <FaEye></FaEye>
+          <span>{total_view}</span>
+        </div>
+      </div>
+    </div>
+
+  );
+};
+export default NewsCard;
